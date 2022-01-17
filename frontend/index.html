@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <title>아주 직방</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header_navbar">
+            <span class="header_logo">아주 다방</span>
+            <div class="header_navbar_btns">
+                <button class="go_to_login_btn">로그인</button>
+                <button class="go_to_register_btn">회원가입</button>
+            </div>
+        </div>
+        <div class="header_container">
+            <span class="header_container_text">어떤 방을 찾으시나요?</span>
+            <select name="choose_location" id="choose_location">
+                <option id ="selection_selected"value="" disabled selected hidden>위치를 선택해주세요</option>
+                <option value="">광교</option>
+                <option value="">우만동</option>
+                <option value="">원천동</option>
+            </select>
+        </div>
+    </div>
+    <!-- CONTAINER -->
+    <div class="container">
+        <div class="container_content hidden">
+            <div class="container_content_header">
+                <span class="container_content_header_location">우만동 검색 결과입니다</span>
+            </div>
+           <div class="container_content_item_list">
+               <li>
+                   <div class="item_img">
+                       <img src="imgs/main_img/1.jpg">
+                   </div>
+                   <div class="item_info">
+                        <span>위치: 우만동</span>
+                        <span>보증금: 5000만원</span>
+                        <span>월세: 80만원</span>
+                        <span>관리비: 17만원</span>
+                        <span>우만동 부동산</span>
+                   </div>
+                   <div class="item_sub_func">
+                        <i id="chat" class="fas fa-comment-dots fa-2x"></i>
+                        <i id="unlike" class="far fa-heart fa-2x"></i>
+                        <i id="like" class="fas fa-heart fa-2x"></i>
+                    </div>
+               </li>
+               <li>
+                    <div class="item_img">
+                        <img src="imgs/main_img/2.jpg">
+                    </div>
+                    <div class="item_info">
+                        <span>위치: 우만동</span>
+                        <span>보증금: 5000만원</span>
+                        <span>월세: 80만원</span>
+                        <span>관리비: 17만원</span>
+                        <span>우만동 부동산</span>
+                    </div>
+                    <div class="item_sub_func">
+                        <i id="chat" class="fas fa-comment-dots fa-2x"></i>
+                        <i id="unlike" class="far fa-heart fa-2x"></i>
+                        <i id="like" class="fas fa-heart fa-2x"></i>
+                    </div>
+                </li>
+           </div>
+        </div>
+         <!-- Log In -->
+        <div class="login hidden">
+            <div class="login_header">
+                <span class="login_header_title">로그인</span>
+            </div>
+            <div class="login_content">
+                <span class="login_sub_text">아주 다방 서비스 이용을 위해 로그인해주세요.</span>
+                <div class="login_content_id">
+                    <label for="login_input">아이디</label>
+                    <input type="text" id="login_input" placeholder="아이디 입력">
+                </div>
+                <div class="login_content_password">
+                    <label for="login_password">비밀번호</label>
+                    <input type="text" id="login_password" placeholder="비밀번호 입력">
+                </div>
+                <div class="login_content_register">
+                    <button class="login_content_register_btn">회원가입</button>
+                </div>
+            </div>
+            <div class="login_footer">
+                <button class="login_btn">로그인</button>
+            </div>
+        </div>
+        <!-- Register -->
+        <div class="register hidden">
+            <div class="register_header">
+                <span class="register_header_title">회원가입</span>
+            </div>
+            <div class="register_content">
+                <span class="register_sub_text">아주 다방 서비스 이용을 위해 아래 정보를 입력해주세요.</span>
+                <div class="register_content_id">
+                    <label for="register_input">아이디</label>
+                    <input type="text" id="register_id_input" placeholder="아이디 입력">
+                </div>
+                <div class="register_content_nickname">
+                    <label for="register_nickname">닉네임</label>
+                    <input type="text" id="register_nickname_input" placeholder="아이디 입력">
+                </div>
+                <div class="register_content_password">
+                    <label for="register_password">비밀번호</label>
+                    <input type="text" id="register_password_input" placeholder="비밀번호 입력">
+                </div>
+            </div>
+            <div class="register_footer">
+                <button class="register_btn">회원가입</button>
+            </div>
+        </div>
+        <!-- details of item page  -->
+        <div class="detail">
+            <div class="detail_header">
+                <button class="prev">＜</button>
+                <div class="carousel-wrapper">
+                    <div class="carousel">
+                        <img src="imgs/detail_img/1.jpg">
+                        <img src="imgs/detail_img/2.jpg">
+                        <img src="imgs/detail_img/3.jpg">
+                        <img src="imgs/detail_img/4.jpg">
+                        <img src="imgs/detail_img/5.jpg">
+                    </div>
+                </div>
+                <button class="next">＞</button>
+            </div>
+            <div class="detail_content">
+                <div class="profile_img_box">
+                    <img src="imgs/detail_img/profile.png" alt="" class="detail_img">
+                </div>
+                <div class="profile_info">
+                    <div class="profile_info_box">
+                        <span class="profile_title">우만동 부동산</span>
+                        <span class="profile_phone_num">010-XXXX-XXXX</span>
+                    </div>
+                    <div class="profile_sub_func">
+                        <i id="chat" class="fas fa-comment-dots fa-2x"></i>
+                        <i id="unlike" class="far fa-heart fa-2x"></i>
+                    </div>   
+                </div>
+            </div>
+            <div class="detail_footer">
+                <span class="detail_footer_title">상세 설명</span>
+                <div class="detail_footer_info">
+                    <span>주소: 우만동 74-1</span>
+                    <span>보증금: 5000만원</span>
+                    <span>월세: 89만원</span>
+                    <span>관리비: 47만원</span>
+                    <span>옵션: TV, 냉장고 등</span>
+                </div>
+                <div class="detail_footer_chat">
+                    <button class="chat_btn">채팅 하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="JS/carousel.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
