@@ -12,5 +12,6 @@ export function makeHeaderDiv(header) {
 
 	/* Header 우측 로그인 버튼 */
 	const headerLoginButton = makeElement('div', 'header--login', "Log In");
+	headerLoginButton.addEventListener('click', () => history.pushState(null, null, '/login'));
 	header.appendChild(headerLoginButton);
 }
