@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 
+/* MySQL 연결 */
 var mysql = require('mysql');
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -9,15 +10,14 @@ var connection = mysql.createConnection({
 	database: 'project2'
 });
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3000);	// 포트 (3000)
 app.use(express.static('public'));
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
-	res.send('root');
 });
 
-app.get('/users', (req, res) => {
+app.get('/test', (req, res) => {
 	connection.query('SELECT * FROM login', (error, rows) => {
 		if (error) throw error;
 		console.log('Info is ', rows);
