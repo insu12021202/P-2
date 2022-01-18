@@ -96,6 +96,11 @@
 
 #chat {
     margin-right: 10%;
+    cursor: pointer;
+}
+
+#unlike {
+    cursor: pointer;
 }
 
 .detail_footer {

@@ -1,0 +1,1 @@
+export let location_arr = ['우만동', '원천동', '광교'];
