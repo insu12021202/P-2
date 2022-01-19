@@ -1,13 +1,14 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
 /* MySQL 연결 */
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-	host: 'localhost',
+const mysql = require('mysql2');
+const connection = mysql.createConnection({
+	host: 'localhosconstt',
 	user: 'root',
 	password: '111111',
-	database: 'project2'
+	database: 'project2',
+	port: 3307
 });
 
 app.set('port', process.env.PORT || 3000);	// 포트 (3000)
@@ -15,14 +16,6 @@ app.use(express.static('public'));
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
-});
-
-app.get('/test', (req, res) => {
-	connection.query('SELECT * FROM login', (error, rows) => {
-		if (error) throw error;
-		console.log('Info is ', rows);
-		res.send(rows);
-	});
 });
 
 app.listen(app.get('port'), () => {

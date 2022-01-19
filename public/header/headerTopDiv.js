@@ -1,4 +1,6 @@
 import {makeElement} from '../makeHTMLElement.js';
+import {makeLoginPage} from '../main/mainLoginPage.js';
+import {main} from '../main/main.js';
 
 /* Header 내부 요소 생성 함수 */
 export function makeHeaderDiv(header) {
@@ -12,6 +14,9 @@ export function makeHeaderDiv(header) {
 
 	/* Header 우측 로그인 버튼 */
 	const headerLoginButton = makeElement('div', 'header--login', "Log In");
-	headerLoginButton.addEventListener('click', () => history.pushState(null, null, '/login'));
+	headerLoginButton.addEventListener('click', () => {
+		history.pushState(null, null, '/login');
+		makeLoginPage(main);
+	});
 	header.appendChild(headerLoginButton);
 }

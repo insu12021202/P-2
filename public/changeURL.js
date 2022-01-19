@@ -1,3 +1,6 @@
+import {makeLoginPage} from './main/mainLoginPage.js';
+import {main} from './main/main.js';
+
 export function changeURL(url) {
 	switch (url) {
 		case '/':
@@ -7,7 +10,7 @@ export function changeURL(url) {
 
 			break;
 		case '/login':
-
+			makeLoginPage(main);
 			break;
 		case '/chat':
 
