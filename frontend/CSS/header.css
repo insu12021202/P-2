@@ -61,8 +61,52 @@
     width: 31%;
     height: 30%;
     padding: 10px;
+    border: 0;
+    border-radius: 15px; 
 }
 
 #choose_location option{
     font-size: 15px;
+}
+
+.user_btn {
+    width: 90px;
+    font-family: 'Pretendard-Regular';
+    background-color: transparent;
+    color: whitesmoke;
+    font-size: 20px;
+    margin-left: 130px;
+}
+
+.user_popup {
+    width: 120px;
+    position: fixed;
+    z-index: 1;
+    float: right;
+    margin-left: 115px;
+    margin-top: 41px;
+    font-family: 'Pretendard-Regular';
+}
+
+.user_popup ul {
+    background-color: whitesmoke;
+    border: 0;
+    border-radius: 5px;
+}
+
+.user_popup ul li {
+    width: 120px;
+    list-style: none;
+    padding: 10px;
+    text-align: center;
+}
+
+.user_popup ul li:hover {
+    background-color: rgb(199, 199, 199);
+    cursor: pointer;
+} 
+
+.user_popup ul li:nth-child(2) {
+    border-top: 1px solid var(--dark-grey-color);
+    border-bottom: 1px solid var(--dark-grey-color);
 }

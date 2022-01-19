@@ -10,11 +10,11 @@ export function getSearchedHTML(value) {
             <img src="https://image.ohou.se/i/bucketplace-v2-development/uploads%2Fadvices%2Fcover_images%2F1486024820409_eZ3O.JPG?gif=1&w=720" alt="1">
         </div>
         <div class="item_info">
-                <span>위치: 우만동</span>
+                <span>위치: ${value}</span>
                 <span>보증금: 5000만원</span>
                 <span>월세: 80만원</span>
                 <span>관리비: 17만원</span>
-                <span>우만동 부동산</span>
+                <span>${value} 부동산</span>
         </div>
         <div class="item_sub_func">
                 <i id="chat" class="fas fa-comment-dots fa-2x"></i>
@@ -27,11 +27,11 @@ export function getSearchedHTML(value) {
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Wohnzimmer_2007.jpg/1200px-Wohnzimmer_2007.jpg" alt="2">
             </div>
             <div class="item_info">
-                <span>위치: 우만동</span>
+                <span>위치: ${value}</span>
                 <span>보증금: 5000만원</span>
                 <span>월세: 80만원</span>
                 <span>관리비: 17만원</span>
-                <span>우만동 부동산</span>
+                <span>${value} 부동산</span>
             </div>
             <div class="item_sub_func">
                 <i id="chat" class="fas fa-comment-dots fa-2x"></i>

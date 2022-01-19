@@ -4,7 +4,7 @@ import moveToHome from "./move_to_home.js";
 import { goToRegister } from "./move_to_register.js";
 import { login_html } from "./views/login_page.js";
 import { register_html } from "./views/register_page.js";
-
+import moveToChat from "./move_to_chat.js";
 
 const container = document.querySelector('.container');
 
@@ -20,6 +20,23 @@ export default function renderingHTML(url, html_str){
         imgs.forEach(img => img.addEventListener('click', (e)=>{
             moveToDetail(e.target.alt);
         }))
+    }
+    if(url.includes('like_list')){
+        container.insertAdjacentHTML('afterbegin', html_str);
+    }
+    if(url.includes('chat_list')){
+        container.insertAdjacentHTML('afterbegin', html_str);
+        const chat_btns = document.querySelectorAll('#chat');
+        chat_btns.forEach((btn) => btn.addEventListener('click',(e)=> {
+            let key = e.target.dataset.value;
+            moveToChat(key);
+        }))
+    }
+    if(url.includes('chatting')){
+        container.insertAdjacentHTML('afterbegin', html_str);
+    }
+    if(url.includes('location_ctr')){
+        container.insertAdjacentHTML('afterbegin', html_str);
     }
     switch (url) {
         case 'login':

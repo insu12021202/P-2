@@ -1,8 +1,10 @@
 @import url(header.css);
-@import url(item_list.css);
+@import url(item_like_chat_list.css);
 @import url(login.css);
 @import url(register.css);
 @import url(detail.css);
+@import url(chat_box.css);
+@import url(location_control.css);
 
 @font-face {
     font-family: 'SBAggroB';
