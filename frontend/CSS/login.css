@@ -47,15 +47,19 @@
     margin-top: 5%;
 }
 
-#login_input, #login_password {
+#username, #current-password {
     border: 1px solid lightgrey;
     border-radius: 2px;
     width: 100%;
-    height: 55%;
+    height: 15%;
     margin-top: 2%;
 }
 
-#login_input::placeholder, #login_password {
+#username {
+    margin-bottom: 20px;
+}
+
+#username::placeholder, #current-password {
     padding: 10px;
 }
 
@@ -65,7 +69,6 @@
     justify-content: end;
     width: 100%;
     height: 10%;
-    margin-top: 2%;
 }
 
 .login_content_register_btn {
@@ -80,9 +83,18 @@
 
 .login_btn {
     width: 100%;
-    height: 100%;
+    height: 15%;
     background-color: #1C5AC1;
     font-family: 'Pretendard-Regular';
     font-size: 17px;
     color: whitesmoke;
+    margin-top: 50px;
 }
+
+.login_form {
+    width: 100%;
+    height: 300px;
+    margin-top: 50px;
+}
+
+

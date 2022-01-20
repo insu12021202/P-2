@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <title>아주 직방</title>
+</head>
+<body class="type1">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header_navbar">
+            <span class="header_logo">아주 다방</span>
+            <div class="header_navbar_btns">
+                <button class="go_to_login_btn">로그인</button>
+                <button class="go_to_register_btn">회원가입</button>
+                <button class="user_btn hidden">여인수</button>
+                <div class="user_popup hidden">
+                    <ul>
+                        <li class="like_list_btn">좋아요 목록</li>
+                        <li class="chat_list_btn">채팅 신청 목록</li>
+                        <li class="location_ctr_btn">지역 설정</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="header_container">
+            <span class="header_container_text">어떤 방을 찾으시나요?</span>
+            <select name="choose_location" id="choose_location">
+                <option id ="selection_selected"value="" disabled selected hidden>위치를 선택해주세요</option>
+                <option value="광교">광교</option>
+                <option value="우만동">우만동</option>
+                <option value="원천동">원천동</option>
+            </select>
+        </div>
+    </div>
+    <!-- CONTAINER -->
+    <div class="container">
+        <div class="login hidden">
+            <div class="login_header">
+                <span class="login_header_title">로그인</span>
+            </div>
+            <div class="login_content">
+                <span class="login_sub_text">아주 다방 서비스 이용을 위해 로그인해주세요.</span>
+                <form action="/login" method="post" class="login_form">
+                    <label for="username">아이디</label>
+                    <input type="text" name="username" id="username" autocomplete="username" required placeholder="아이디 입력">
+                    <label for="current-password">비밀번호</label>
+                    <input type="password" id="current-password" autocomplete="current-password" required placeholder="비밀번호 입력">
+                    <button type="submit" class="login_btn">로그인</button>
+                </form>
+                <div class="login_content_register">
+                    <button class="login_content_register_btn">회원가입</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="JS/open_user_popup.js" type="module"></script>
+    <script src="JS/carousel.js" type="module"></script>
+    <script src="JS/choose_location.js" type="module"></script>
+    <script src="JS/pushUrl.js" type="module"></script>
+    <script src="JS/render.js" type="module"></script>
+    <script src="JS/check_body.js" type="module"></script>
+    <script src="JS/page_move.js" type="module"></script>
+    <script src="JS/move_to_login.js" type="module"></script>
+    <script src="JS/move_to_register.js" type="module"></script>
+    <script src="JS/move_to_detail.js" type="module"></script>
+    <script src="JS/views/detail_page.js" type="module"></script>
+    <script src="JS/views/item_list.js" type="module"></script>
+    <script src="JS/move_to_home.js" type="module"></script>
+    <script src="JS/move_to_like_list.js" type="module"></script>
+    <script src="JS/move_to_chat_list.js" type='module'></script>
+    <script src="JS/move_to_location_ctr.js" type='module'></script>
+    <script src="JS/move_to_chat.js" type='module'></script>
+    <script src="JS/redirect.js"></script>
+</body>
+</html>
