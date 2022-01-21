@@ -110,10 +110,23 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/login-success'}));
-
-isAuthenticated
-req.user
+app.post('/login', (req, res, next) => {
+	passport.authenticate('local', (err, user, info) => {
+		console.log(err, user, info);
+		if (err) {
+			res.json({ success: false, msg: '로그인 실패' });
+		} if (info) {
+			res.json({ success: false, msg: info });
+		}
+		return req.logIn(user, (loginError) => {
+			if (loginError) {
+				console.log(loginError);
+				return;
+			}
+			res.json({ success: true, msg: '로그인 성공!' });
+		});
+	})(req, res, next);
+});
 
 app.post('/sign_up', userExists, (req, res, next) => {
 	const saltHash = genPassword(req.body.pw);
