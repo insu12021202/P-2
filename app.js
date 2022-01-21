@@ -33,7 +33,6 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(express.static('public'));
-app.set("view engine", "ejs");
 
 /* MySQL 연결 */
 const connection = mysql.createConnection({
@@ -51,6 +50,7 @@ connection.connect((err) => {
 const customFields = {
 	usernameField: 'uname',
 	passwordField: 'pw',
+	locationField: 'location',
 };
 
 const verifyCallback = (username, password, done) => {
@@ -58,7 +58,7 @@ const verifyCallback = (username, password, done) => {
 		if (error) return done(error);
 		if (results.length == 0) return done(null, false);
 		const isValid = validPassword(password, results[0].hash, results[0].salt);
-		login = { login_id: results[0].login_id, username: results[0].username, hash: results[0].hash, salt: results[0].salt };
+		const login = { login_id: results[0].login_id, username: results[0].username, hash: results[0].hash, salt: results[0].salt, location: results[0].location };
 		if (isValid) return done(null, user);
 		else return done(null, false);
 	});
@@ -108,6 +108,23 @@ app.set('port', process.env.PORT || 3000);	// 포트 (3000)
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/login', passport.authenticate('local', {failureRedirect: '/login-failure', successRedirect: '/login-success'}));
+
+isAuthenticated
+req.user
+
+app.post('/sign_up', userExists, (req, res, next) => {
+	const saltHash = genPassword(req.body.pw);
+	const salt = saltHash.salt;
+	const hash = saltHash.hash;
+
+	connection.query('INSERT INTO login(username, hash, salt, isAdmin, location) VALUES(?, ?, ?, 0, ?)', [req.body.uname, hash, salt, req.body.location],
+	function (error, results, fields) {
+		if (error) console.log(error);
+		else console.log("Successfully Entered");
+	});
 });
 
 app.listen(app.get('port'), () => {

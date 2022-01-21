@@ -1,5 +1,6 @@
 import {makeLoginPage} from './main/mainLoginPage.js';
 import {main} from './main/main.js';
+import { makeSignUpPage } from './main/mainSignUpPage.js';
 
 export function changeURL(url) {
 	switch (url) {
@@ -7,7 +8,7 @@ export function changeURL(url) {
 
 			break;
 		case '/sign_up':
-
+			makeSignUpPage(main);
 			break;
 		case '/login':
 			makeLoginPage(main);
