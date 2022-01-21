@@ -10,6 +10,10 @@ const container = document.querySelector('.container');
 
 window.onpopstate = function(e) {
     let url = location.pathname;
+    router(url);
+}
+
+function router(url) {
     if(url.includes('searched')){
         //url의 끝 숫자로 검색어 값 뽑기
         let index = url.substring(10,);

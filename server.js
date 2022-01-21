@@ -2,19 +2,28 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+let loginedHTML = require('./frontend/JS/views/logined_page.js');
+// const ejs = require('ejs');
+
 
 //정적 폴더 설정
 app.use(express.static('frontend'));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+app.set('view_engine', 'ejs');
+app.set('views', __dirname + '/view');
 
 app.use(session({
     secret: 'sknfienf123',
     resave: false,
     saveUninitialized: true,
-    store: new FileStore()
+    store: new FileStore(),
+    cookie: false
 }))
 
 const con = mysql.createConnection({
@@ -29,60 +38,82 @@ con.connect(function(err) {
     console.log('DB Connected');
 })
 
-//passport
-var authData = {
-    username: 'insu12',
-    password: '1111',
-    nickname: 'insu'
-};
 
 var passport = require('passport'),
 LocalStrategy = require('passport-local').Strategy;
+const { cookie, render } = require('express/lib/response');
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 //세션 처리
 passport.serializeUser(function(user, done) {
-    done(null, user.username);
+    console.log('serializeUser', user.nickname);
+    done(null, user.nickname);
 });
   
 passport.deserializeUser(function(id, done) {
-    done(null, authData);
+    console.log('deserializeUser', id);
+    done(null, id);
 });
 
 //로그인 정보 인증 과정
 passport.use(new LocalStrategy(
     function(username, password, done) {
-        console.log(username, password);
-        if(username == authData.username) {
-            if(password === authData.password) {
-                return done(null, authData);
-            } else {
-                return done(null, false, { message: 'Incorrect password.' });
+        console.log(username,password);
+        let sql = `SELECT * FROM user WHERE username='${username}'`;
+        con.query(sql, [username, password], function(err, result) {
+            if(err)
+                return done(null, false, {message: 'Incorrect username'});
+            else {
+                if(password === result[0].password) {
+                    let json = JSON.stringify(result[0]);
+                    let userinfo = JSON.parse(json);
+                    console.log(userinfo);
+                    return done(null, userinfo);
+                } else{
+                    return done(null, false, { message: 'Incorrect password.' });
+                }
             }
-        } else {
-            return done(null, false, { message: 'Incorrect username.' });
-        }
+        })
     }
 ));
 
 app.post('/login', passport.authenticate('local', {
-    successRedirect: '/welcome',
-    failureRedirect: '/login'
-    //failureFlash: true
+    successRedirect: '/',
+    failureRedirect: '/login',
+    // failureFlash: true
     })
 );
 
-app.get('/welcome', (req, res)=> {
-    let user_name = req.user.nickname;
-    let html = `<h2> ${user_name}님 환영합니다 <h2>`;
-    res.send(html);
+app.get('/logout', (req, res)=> {
+    req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+    });
 })
 
+app.post('/register', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    let nickname = req.body.nickname;
+    let sql = `INSERT INTO user (username,password,nickname) VALUES('${username}','${password}','${nickname}')`;
+    con.query(sql, function(err, result) {
+        if(err) throw err;
+        console.log('회원가입 성공');
+    })
+})
+
+// app.get('/rr', (req, res) => {
+//     console.log('test', req.user);
+// })
+
 app.get('/', (req, res)=> {
-    console.log('홈 페이지',req.user);
-    res.sendFile(__dirname + '/index.html');
+    if(req.user) {
+        res.render('logined.ejs', {username: req.user});
+    }else{
+        res.sendFile(__dirname + '/index.html');
+    } 
 })
 
 app.listen(8000, function(){

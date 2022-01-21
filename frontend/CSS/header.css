@@ -110,3 +110,7 @@
     border-top: 1px solid var(--dark-grey-color);
     border-bottom: 1px solid var(--dark-grey-color);
 }
+
+.user_popup ul li:nth-child(4) {
+    border-top: 1px solid var(--dark-grey-color);
+}

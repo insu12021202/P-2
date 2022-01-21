@@ -11,11 +11,11 @@ export let register_html =
     </div>
     <div class="register_content_nickname">
         <label for="register_nickname">닉네임</label>
-        <input type="text" id="register_nickname_input" placeholder="아이디 입력">
+        <input type="text" id="register_nickname_input" placeholder="닉네임 입력">
     </div>
     <div class="register_content_password">
         <label for="register_password">비밀번호</label>
-        <input type="text" id="register_password_input" placeholder="비밀번호 입력">
+        <input type="password" id="register_password_input" placeholder="비밀번호 입력">
     </div>
 </div>
 <div class="register_footer">

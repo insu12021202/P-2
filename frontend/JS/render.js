@@ -47,6 +47,33 @@ export default function renderingHTML(url, html_str){
             break;
         case 'register':
                 container.insertAdjacentHTML('afterbegin', register_html);
+
+                const id_value = document.querySelector('#register_id_input');
+                const nickname_value = document.querySelector('#register_nickname_input');
+                const password_value = document.querySelector('#register_password_input');
+                const register_btn = document.querySelector('.register_btn');
+
+                register_btn.addEventListener('click', ()=> {
+                    let username = id_value.value;
+                    let password = password_value.value;
+                    let nickname = nickname_value.value;
+
+                    $.ajax({
+                        type: "POST",
+                        url:'/register',
+                        data: {
+                            username : username,
+                            password : password,
+                            nickname : nickname
+                        },
+                        dataType: 'json',
+                        success: (response)=>{
+                            console.log(response);
+                        },
+                        error: (log)=>{console.log(log)}
+                    });
+                })
+
             break;
         case '': //홈 화면 그리기 (서버 구축 후에 만들 예정) 
                 moveToHome();
