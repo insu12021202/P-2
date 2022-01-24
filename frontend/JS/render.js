@@ -5,6 +5,9 @@ import { goToRegister } from "./move_to_register.js";
 import { login_html } from "./views/login_page.js";
 import { register_html } from "./views/register_page.js";
 import moveToChat from "./move_to_chat.js";
+import { checkId } from "./check_id.js";
+import { addLocation } from "./add_location.js";
+import { deleteLocation } from "./delete_location.js";
 
 const container = document.querySelector('.container');
 
@@ -37,6 +40,9 @@ export default function renderingHTML(url, html_str){
     }
     if(url.includes('location_ctr')){
         container.insertAdjacentHTML('afterbegin', html_str);
+        //지역 관리창이 렌더링 된 후에 추가하기 버튼 누르면 팝업 뜨도록 구현
+        addLocation();
+        deleteLocation();
     }
     switch (url) {
         case 'login':
@@ -68,11 +74,16 @@ export default function renderingHTML(url, html_str){
                         },
                         dataType: 'json',
                         success: (response)=>{
-                            console.log(response);
+                            if(response.success === 'success') {
+                                window.alert('회원가입에 성공했습니다. 다시 로그인 해주세요.');
+                                history.back();
+                            }
                         },
                         error: (log)=>{console.log(log)}
                     });
                 })
+
+                checkId();
 
             break;
         case '': //홈 화면 그리기 (서버 구축 후에 만들 예정) 

@@ -59,7 +59,7 @@
     margin-bottom: 20px;
 }
 
-#username::placeholder, #current-password {
+#username, #current-password {
     padding: 10px;
 }
 

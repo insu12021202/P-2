@@ -1,18 +1,18 @@
-export function getLocationCtrHTML(key) {
+export function getLocationCtrHTML(list) {
     let location_ctr_html =
     `<div class="location_ctr_add_popup hidden">
     <span class="location_ctr_add_title">위치를 입력하세요</span>
     <input type="text" name="location_add_input" id="location_add_input">
     <div class="location_ctr_add_popup_btns">
-        <button class="location_ctr_add_popup_cancle_btn">취소</button>
-        <button class="location_ctr_add_popup_add_btn">추가하기</button>
+        <button class="add_popup_cancle_btn">취소</button>
+        <button class="add_popup_add_btn">추가하기</button>
     </div>
 </div>
 <div class="location_ctr_delete_popup hidden">
     <span class="location_ctr_delete_popup_text">정말 삭제하시겠습니까?</span>
     <div class="location_ctr_delete_popup_btns">
-        <button class="location_ctr_delete_popup_cancle_btn">취소</button>
-        <button class="location_ctr_delete_popup_delete_btn">삭제하기</button>
+        <button class="delete_popup_cancle_btn">취소</button>
+        <button class="delete_popup_delete_btn">삭제하기</button>
     </div>
 </div>
 <div class="location_ctr">
@@ -22,20 +22,7 @@ export function getLocationCtrHTML(key) {
     </div>
     <div class="location_ctr_content">
         <table class="location_ctr_table">
-            <tr>
-                <td>우만동</td>
-                <td>원천동</td>
-                <td>우만동</td>
-                <td>우만동</td>
-                <td>우만동</td>
-            </tr>
-            <tr>
-                <td>우만동</td>
-                <td>우만동</td>
-                <td>우만동</td>
-                <td>우만동</td>
-                <td>우만동</td>
-            </tr>
+            ${list}
         </table>
     </div>
     <div class="location_ctr_footer">
@@ -45,4 +32,15 @@ export function getLocationCtrHTML(key) {
 </div>`
 
     return location_ctr_html;
+}
+
+export function makeTdList(response_list) {
+    let list = '<tr>';
+    let i = 0;
+    while(i < response_list.length){
+        list = list + `<td>${response_list[i]}</td>`;
+        i = i + 1;
+    }
+    list = list + '</tr>';
+    return list;
 }

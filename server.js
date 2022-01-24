@@ -3,8 +3,8 @@ const app = express();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-var session = require('express-session');
-var FileStore = require('session-file-store')(session);
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session');
 let loginedHTML = require('./frontend/JS/views/logined_page.js');
 // const ejs = require('ejs');
 
@@ -22,8 +22,13 @@ app.use(session({
     secret: 'sknfienf123',
     resave: false,
     saveUninitialized: true,
-    store: new FileStore(),
-    cookie: false
+    store: new MySQLStore({
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: 'dudlstn908!',
+        database: 'p-2_db'
+    })
 }))
 
 const con = mysql.createConnection({
@@ -38,46 +43,8 @@ con.connect(function(err) {
     console.log('DB Connected');
 })
 
-
-var passport = require('passport'),
-LocalStrategy = require('passport-local').Strategy;
-const { cookie, render } = require('express/lib/response');
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-//세션 처리
-passport.serializeUser(function(user, done) {
-    console.log('serializeUser', user.nickname);
-    done(null, user.nickname);
-});
-  
-passport.deserializeUser(function(id, done) {
-    console.log('deserializeUser', id);
-    done(null, id);
-});
-
-//로그인 정보 인증 과정
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        console.log(username,password);
-        let sql = `SELECT * FROM user WHERE username='${username}'`;
-        con.query(sql, [username, password], function(err, result) {
-            if(err)
-                return done(null, false, {message: 'Incorrect username'});
-            else {
-                if(password === result[0].password) {
-                    let json = JSON.stringify(result[0]);
-                    let userinfo = JSON.parse(json);
-                    console.log(userinfo);
-                    return done(null, userinfo);
-                } else{
-                    return done(null, false, { message: 'Incorrect password.' });
-                }
-            }
-        })
-    }
-));
+//별도로 분리한 passport.js에 express와 MySQL을 인자로 넘겨준다.
+let passport = require('./frontend/JS/passport.js')(app, con);
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
@@ -88,7 +55,6 @@ app.post('/login', passport.authenticate('local', {
 
 app.get('/logout', (req, res)=> {
     req.session.destroy(() => {
-        res.clearCookie('connect.sid');
         res.redirect('/');
     });
 })
@@ -97,20 +63,77 @@ app.post('/register', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     let nickname = req.body.nickname;
-    let sql = `INSERT INTO user (username,password,nickname) VALUES('${username}','${password}','${nickname}')`;
+    let sql = `INSERT INTO user (username,password,nickname) SELECT '${username}','${password}','${nickname}' FROM DUAL WHERE NOT EXISTS (SELECT username FROM user where username='${username}')`;
     con.query(sql, function(err, result) {
         if(err) throw err;
-        console.log('회원가입 성공');
+        res.send({success : 'success'});
     })
 })
 
-// app.get('/rr', (req, res) => {
-//     console.log('test', req.user);
-// })
+app.get('/location_ctr', (req, res) => {
+    let sql = `SELECT location_name,nickname FROM set_location LEFT JOIN user ON set_location.user_id = user.idUSER WHERE nickname='${req.user.nickname}';`
+    con.query(sql, function(err, result) {
+        if(err) throw err;
+        const location_arr = result.map(data => data.location_name);
+        res.send(location_arr);
+    })
+})
+
+app.post('/location_ctr_add', (req, res) => {
+    let user_nickname = req.user.nickname;
+    let sql2 = `SELECT idUSER FROM user WHERE nickname='${user_nickname}'`;
+    con.query(sql2, function(err, result) {
+        if (err) throw err;
+        let location_name = req.body.location_name;
+        let user_id = result[0].idUSER;
+        let sql = `INSERT INTO set_location (location_name,user_id) VALUES ('${location_name}','${user_id}')`;
+        con.query(sql, function(err, result){
+            if(err) throw err;
+            res.send({success : 'success'});
+        })
+    })
+})
+
+app.delete('/location_ctr_delete', (req, res) => {
+    //문자열 형식으로 받은 배열을 배열 타입으로 바꿔주는 작업
+    let str = req.body.target;
+    let str2 = str.replace(/['"]+/g, '');
+    let str3 = str2.slice(1,-1);
+    let target_arr = str3.split(',');
+    
+    //user_id를 먼저 얻어오고 그 후에 DELETE 문 실행
+    let user_nickname = req.user.nickname;
+    let sql2 = `SELECT idUSER FROM user WHERE nickname='${user_nickname}'`;
+    con.query(sql2, function(err, result) {
+        if(err) throw err;
+        let user_id = result[0].idUSER;    
+        target_arr.forEach(element => {
+            let sql = `DELETE FROM set_location WHERE location_name='${element}' AND user_id='${user_id}'`;
+            con.query(sql, function (err, result) {
+                if(err) throw err;
+                res.send({success : 'success'});
+            })
+        });    
+    })
+})
+
+app.post('/check_id', (req, res)=> {
+    let username =  req.body.id;
+    let sql = `SELECT username FROM user WHERE username='${username}'`;
+    con.query(sql, function(err, result) {
+        if(err) throw err;
+        if(result.length === 0){
+            res.send({success : 'success'});
+        }
+        else{
+            res.send({success : 'fail'});
+        }
+    })
+})
 
 app.get('/', (req, res)=> {
     if(req.user) {
-        res.render('logined.ejs', {username: req.user});
+        res.render('logined.ejs', {username: req.user.nickname});
     }else{
         res.sendFile(__dirname + '/index.html');
     } 

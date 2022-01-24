@@ -8,6 +8,7 @@ export let register_html =
     <div class="register_content_id">
         <label for="register_input">아이디</label>
         <input type="text" id="register_id_input" placeholder="아이디 입력">
+        <button id="register_id_check_btn">아이디 중복 체크</button>
     </div>
     <div class="register_content_nickname">
         <label for="register_nickname">닉네임</label>
