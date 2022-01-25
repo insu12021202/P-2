@@ -1,6 +1,7 @@
 import check_body from "./check_body.js";
 import pushUrl from "./pushUrl.js";
 import renderingHTML from "./render.js";
+import { rednerSelect } from "./select_location.js";
 import { getLocationCtrHTML, makeTdList } from "./views/location_ctr_page.js";
 
 const location_ctr_btn = document.querySelector('.location_ctr_btn');
@@ -17,6 +18,7 @@ function moveToLocationCtr() {
         success: (response)=>{
             let user_name = user_btn.innerText;
             let list = makeTdList(response);
+            rednerSelect(response);
             let html_str = getLocationCtrHTML(list);
             let url = `${user_name}/location_ctr`;
             pushUrl(url);

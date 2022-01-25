@@ -17,7 +17,7 @@ export function addLocation() {
             success: (response)=>{
                 if(response.success === 'success'){
                     window.alert('성공적으로 지역이 추가 되었습니다.');
-                    history.back();
+                    location.href = 'http://localhost:8000/';
                 }
             },
             error: (log)=>{console.log(log)}

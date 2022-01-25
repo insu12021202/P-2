@@ -1,5 +1,5 @@
-export default function pushUrl(value) {
-    let url = location.origin + `/${value}`;
+export default function pushUrl(path, value) {
+    let url = location.origin + `/${path}`;
     let state = {data : value};
     history.pushState(state, null, url);
 }

@@ -8,7 +8,6 @@ module.exports = function (app, con){
 
     //세션 처리
     passport.serializeUser(function(user, done) {
-        console.log('serializeUser', user.username);
         done(null, user.username);
     });
     
@@ -17,7 +16,6 @@ module.exports = function (app, con){
         con.query(sql, function(err, result) {
             if(err) throw err;
             else{
-                console.log('deserializeUser', result[0].nickname);
                 done(null, result[0]);
             }
         })
@@ -35,7 +33,6 @@ module.exports = function (app, con){
                     if(password === result[0].password) {
                         let json = JSON.stringify(result[0]);
                         let userinfo = JSON.parse(json);
-                        console.log('로그인 인증 과정 콘솔 사용자가 입력한 데이터: ',userinfo);
                         return done(null, userinfo);
                     } else{
                         return done(null, false, { message: 'Incorrect password.' });

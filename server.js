@@ -5,9 +5,18 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session');
-let loginedHTML = require('./frontend/JS/views/logined_page.js');
+const multer = require('multer');
 // const ejs = require('ejs');
 
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './frontend/images')
+    },
+    filename: (req, file, cb)=> {
+        cb(null, Date.now() + '--' + file.originalname)
+    }
+})
+const upload = multer({storage : fileStorageEngine});
 
 //정적 폴더 설정
 app.use(express.static('frontend'));
@@ -57,6 +66,25 @@ app.get('/logout', (req, res)=> {
     req.session.destroy(() => {
         res.redirect('/');
     });
+})
+app.get('/searched/우만동', (req, res) => {
+    console.log('ㅇ잉');
+})
+
+app.post('/searched_item', (req, res) => {
+    let location = req.body.location;
+    let sql = `select location,deposit,rental_cost,m_fee,image,name,phone_num FROM sale_item LEFT JOIN owner ON sale_item.owner_id = owner.idowner WHERE location='${location}'`;
+    con.query(sql, function(err, result) {
+        if(err) throw err;
+        //만약 해당 지역의 매물이 없을 때
+        if(result.length === 0) {
+            res.send({success : 'fail'});
+        }// 해당 지역의 매물이 있을 때
+        else {
+            res.send(result);
+        }
+    })
+    
 })
 
 app.post('/register', (req, res) => {
@@ -133,7 +161,14 @@ app.post('/check_id', (req, res)=> {
 
 app.get('/', (req, res)=> {
     if(req.user) {
-        res.render('logined.ejs', {username: req.user.nickname});
+        //유저가 로그인 되어 있다면 유저 정보를 토대로 설정해놓은 지역 데이터를 받아옴
+        let sql = `SELECT location_name,nickname FROM set_location LEFT JOIN user ON set_location.user_id = user.idUSER WHERE nickname='${req.user.nickname}';`
+        con.query(sql, function(err, result) {
+            if(err) throw err;
+            const location_arr = result.map(data => data.location_name);
+            //ejs 파일에 지역 정보를 넘겨줘서 홈페이지에서 새로고침 될 때마다 Select 태그의 option이 추가 되도록 설정
+            res.render('logined.ejs', {username: req.user.nickname, list: location_arr});
+        })
     }else{
         res.sendFile(__dirname + '/index.html');
     } 

@@ -50,6 +50,10 @@ button, select {
     border: none;
 }
 
+button {
+    background-color: transparent;
+}
+
 button, .header_logo {
     cursor: pointer;
 }

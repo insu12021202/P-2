@@ -24,10 +24,11 @@
 }
 
 .container_content_item_list li, .container_content_like_list li, .container_content_chat_list li{
-    padding: var(--small-padding);
+    padding: var(--padding);
     display: flex;
     list-style: none;
     height: 180px;
+    border-bottom: 1px solid rgb(122, 122, 122);
 }
 
 .item_img {
@@ -53,7 +54,7 @@
     font-family: 'Pretendard-Regular';
     color: rgb(29, 28, 28);
     text-align: start;
-    padding: 0.5% 0 0.5% 35%;
+    padding: 0.5% 15% 0.5% 20%;
     font-size: 20px;
 }
 

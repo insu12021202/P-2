@@ -32,9 +32,10 @@
             <span class="header_container_text">어떤 방을 찾으시나요?</span>
             <select name="choose_location" id="choose_location">
                 <option id ="selection_selected"value="" disabled selected hidden>위치를 선택해주세요</option>
-                <option value="광교">광교</option>
-                <option value="우만동">우만동</option>
-                <option value="원천동">원천동</option>
+                <% let i = 0 %>
+                <% list.forEach(item=> { %>
+                    <option value="<%= item%>"><%= item%></option>
+                <%  }) %>
             </select>
         </div>
     </div>
