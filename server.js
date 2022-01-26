@@ -67,24 +67,66 @@ app.get('/logout', (req, res)=> {
         res.redirect('/');
     });
 })
-app.get('/searched/우만동', (req, res) => {
-    console.log('ㅇ잉');
-})
 
 app.post('/searched_item', (req, res) => {
-    let location = req.body.location;
-    let sql = `select location,deposit,rental_cost,m_fee,image,name,phone_num FROM sale_item LEFT JOIN owner ON sale_item.owner_id = owner.idowner WHERE location='${location}'`;
-    con.query(sql, function(err, result) {
+    let user_nickname = req.user.nickname;
+    let sql2 = `SELECT idUSER FROM user WHERE nickname='${user_nickname}'`;
+    con.query(sql2, function(err, result) {
         if(err) throw err;
-        //만약 해당 지역의 매물이 없을 때
-        if(result.length === 0) {
-            res.send({success : 'fail'});
-        }// 해당 지역의 매물이 있을 때
-        else {
-            res.send(result);
+        let user_id = result[0].idUSER;
+        let location = req.body.location;
+        let sql = `SELECT id,location,deposit,image,rental_cost,m_fee,name,phone_num,chat,sub_func_list.like,user_id FROM sub_func_list right join sale_item on sub_func_list.sale_item_id = sale_item.id right join owner on sale_item.owner_id = owner.idowner where location='${location}' and (user_id='${user_id}' or user_id is null)`;
+        con.query(sql, function(err, result) {
+            if(err) throw err;
+            //만약 해당 지역의 매물이 없을 때
+            if(result.length === 0) {
+                res.send({success : 'fail'});
+            }// 해당 지역의 매물이 있을 때
+            else {
+                result.user_id = user_id;
+                res.send(result);
+            }
+        }) 
+    })
+})
+
+app.post('/sub_func', (req, res) => {
+    let item_id = req.body.item_id;
+    let like_status = req.body.like_status;
+    let user_nickname = req.user.nickname;
+    let sql2 = `SELECT idUSER FROM user WHERE nickname='${user_nickname}'`;
+    con.query(sql2, function(err, result) {
+        if(err) throw err;
+        let user_id = result[0].idUSER;
+        if(like_status === '1') { //좋아요가 눌려있는 상태면 좋아요 취소 실행
+            let sql = `select * from sub_func_list where sale_item_id='${item_id}' and user_id='${user_id}'`; //일단 sub_func_list에 해당 매물 번호와 user_id를 가진 row를 불러오기
+            con.query(sql, function(err, result) {
+                let sql3 = ``;
+                if(JSON.stringify(result) === '{}') { //만약 그 row 없으면 해당 row에 like를 0으로 바꾸기
+                    sql3 = `insert into sub_func_list(sale_item_id,chat,sub_func_list.like,user_id) values('${item_id}','0','0','${user_id}')`;
+                }else{ //만약 그 row가 있으면 새로운 row를 만들어서 like를 0으로 설정
+                    sql3 = `update sub_func_list set sub_func_list.like='0'  where sale_item_id='${item_id}' and user_id='${user_id}'`;
+                }
+                con.query(sql3, function(err, result) {
+                    res.send({success : 'success1'});
+                })
+            })
+        }
+        if(like_status === '0') { //좋아요가 눌려있는 상태면 좋아요 취소 실행
+            let sql = `select * from sub_func_list where sale_item_id='${item_id}' and user_id='${user_id}'`; //일단 sub_func_list에 해당 매물 번호와 user_id를 가진 row를 불러오기
+            con.query(sql, function(err, result) {
+                let sql3 = ``;
+                if(JSON.stringify(result) === '[]') { //만약 그 row 없으면 해당 row에 like를 1로 바꾸기
+                    sql3 = `insert into sub_func_list(sale_item_id,chat,sub_func_list.like,user_id) values('${item_id}','0','1','${user_id}')`;
+                }else{ //만약 그 row가 있으면 새로운 row를 만들어서 like를 1로 설정
+                    sql3 = `update sub_func_list set sub_func_list.like='1'  where sale_item_id='${item_id}' and user_id='${user_id}'`;
+                }
+                con.query(sql3, function(err, result) {
+                    res.send({success : 'success0'});
+                })
+            })
         }
     })
-    
 })
 
 app.post('/register', (req, res) => {

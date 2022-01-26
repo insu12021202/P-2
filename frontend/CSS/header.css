@@ -65,6 +65,14 @@
     border-radius: 15px; 
 }
 
+#choose_location_logined {
+    width: 31%;
+    height: 30%;
+    padding: 10px;
+    border: 0;
+    border-radius: 15px; 
+}
+
 #choose_location option{
     font-size: 15px;
 }

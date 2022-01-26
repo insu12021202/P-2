@@ -12,12 +12,18 @@ export function getSearchedHTML(list, location) {
 }
 
 export function makeItemList(response) {
-    let list = ''
+    let like = ``;
+    let list = '';
     let i = 0;
     while(i < response.length){
+        if(response[i].like === 1){
+            like = `<i id="like" data-key="${response[i].id}" class="fas fa-heart fa-2x"></i>`;
+        }else {
+            like = `<i id="like" data-key="${response[i].id}" class="far fa-heart fa-2x"></i>`;
+        }
         list = list + 
         `<li> <div class="item_img">
-        <img src="${response[i].image}" alt="2">
+        <img src="${response[i].image}" data-key="${response[i].id}">
         </div>
         <div class="item_info">
             <span>위치: ${response[i].location}</span>
@@ -28,8 +34,7 @@ export function makeItemList(response) {
         </div>
         <div class="item_sub_func">
             <i id="chat" class="fas fa-comment-dots fa-2x"></i>
-            <i id="unlike" class="far fa-heart fa-2x"></i>
-            <i id="like" class="fas fa-heart fa-2x"></i>
+            ${like}
         </div></li>`;
         i = i + 1;
     }
