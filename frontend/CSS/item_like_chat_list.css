@@ -68,15 +68,18 @@
 
 .item_sub_func i {
     margin-right: 5%;
+    
+}
+
+.like {
+    color: rgb(204, 62, 62);
+    margin-left: 5%;
     cursor: pointer;
 }
 
-#like, #unlike {
-    color: rgb(204, 62, 62);
-}
-
-#chat {
+.chat {
     color: var(--dark-grey-color);
+    cursor: pointer;
 }
 
 

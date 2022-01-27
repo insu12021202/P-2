@@ -16,14 +16,15 @@ export function makeItemList(response) {
     let list = '';
     let i = 0;
     while(i < response.length){
+        let image = response[i].paths.split(',');
         if(response[i].like === 1){
-            like = `<i id="like" data-key="${response[i].id}" class="fas fa-heart fa-2x"></i>`;
+            like = `<i data-key="${response[i].id}" class="fas fa-heart fa-2x like"></i>`;
         }else {
-            like = `<i id="like" data-key="${response[i].id}" class="far fa-heart fa-2x"></i>`;
+            like = `<i data-key="${response[i].id}" class="far fa-heart fa-2x like"></i>`;
         }
         list = list + 
         `<li> <div class="item_img">
-        <img src="${response[i].image}" data-key="${response[i].id}">
+        <img src="${image[0]}" data-user="${response[i].user_id}" data-key="${response[i].id}">
         </div>
         <div class="item_info">
             <span>위치: ${response[i].location}</span>
@@ -33,7 +34,7 @@ export function makeItemList(response) {
             <span>부동산: ${response[i].name}</span>
         </div>
         <div class="item_sub_func">
-            <i id="chat" class="fas fa-comment-dots fa-2x"></i>
+            <i class="fas fa-comment-dots fa-2x chat"></i>
             ${like}
         </div></li>`;
         i = i + 1;

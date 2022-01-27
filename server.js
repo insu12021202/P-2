@@ -75,7 +75,7 @@ app.post('/searched_item', (req, res) => {
         if(err) throw err;
         let user_id = result[0].idUSER;
         let location = req.body.location;
-        let sql = `SELECT id,location,deposit,image,rental_cost,m_fee,name,phone_num,chat,sub_func_list.like,user_id FROM sub_func_list right join sale_item on sub_func_list.sale_item_id = sale_item.id right join owner on sale_item.owner_id = owner.idowner where location='${location}' and (user_id='${user_id}' or user_id is null)`;
+        let sql = `SELECT id,location,paths,deposit,rental_cost,m_fee,name,phone_num,chat,sub_func_list.like,user_id FROM sub_func_list right join sale_item on sub_func_list.sale_item_id = sale_item.id right join owner on sale_item.owner_id = owner.idowner inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(id = i.sale_item_id) where location='${location}' and (user_id='${user_id}' or user_id is null)`;
         con.query(sql, function(err, result) {
             if(err) throw err;
             //만약 해당 지역의 매물이 없을 때
@@ -126,6 +126,19 @@ app.post('/sub_func', (req, res) => {
                 })
             })
         }
+    })
+})
+
+app.post('/detail', (req, res) => {
+    let item_id = req.body.item_id;
+    let user_id = req.body.user_id;
+    let like_status = req.body.like_status;
+    let sql = `SELECT id, location, deposit, paths, rental_cost, m_fee, name, phone_num, owner_profile FROM sale_item as s inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(s.id = i.sale_item_id) left join owner on owner_id = idowner where id='${item_id}'
+    `
+    con.query(sql, function(err, result) {
+        if(err) throw err;
+        result[0].like_status = like_status;
+        res.send(result);
     })
 })
 
