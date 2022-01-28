@@ -2,10 +2,17 @@
 
 <div align=center>
 
+<<<<<<< HEAD
 [![CONTRIBUTORS](https://img.shields.io/badge/contributors-30-green.svg?style=flat-square)](https://github.com/AJOU-BEGINNER/P-1)
 
 <a href="https://github.com/AJOU-BEGINNER/P-1/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=AJOU-BEGINNER/P-1" />
+=======
+[![CONTRIBUTORS](https://img.shields.io/badge/contributors-25-green.svg?style=flat-square)](https://github.com/AJOU-BEGINNER/P-2)
+
+<a href="https://github.com/AJOU-BEGINNER/P-2/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AJOU-BEGINNER/P-2" />
+>>>>>>> f4c7dca9b8c11f7a5d42d1d030199fcc5d8968cf
 </a>
 
 </div>
@@ -26,11 +33,23 @@
 우리는 웹 풀스택 스터디를 통해
 
 - 웹 동작 흐름
+<<<<<<< HEAD
 - HTTP 통신
 - JavaScript를 통한 DOM 동작 방법
 - SPA
 - Express를 통한 서버 구축
 - MySQL을 통한 데이터베이스 구축
+=======
+- JavaScript를 통한 DOM 동작 방법
+- Express를 통한 서버 구축
+- MySQL을 통한 데이터베이스 구축
+- HTTP 통신
+- Socket 통신
+- Passport를 사용한 로그인
+- OAuth를 사용한 소셜 로그인
+- SPA
+- DB의 ORM , ERD 사용방법
+>>>>>>> f4c7dca9b8c11f7a5d42d1d030199fcc5d8968cf
 
 학습을 하여 성장할 계획입니다! 🔥 🔥
 
@@ -38,7 +57,11 @@
 
 ## 🎸 기타
 
+<<<<<<< HEAD
 혹시 저희 스터디를 관리하는 [저장소](https://github.com/AJOU-BEGINNER/P-1)로 인하여 <br/>
+=======
+혹시 저희 스터디를 관리하는 [저장소](https://github.com/AJOU-BEGINNER/P-2)로 인하여 <br/>
+>>>>>>> f4c7dca9b8c11f7a5d42d1d030199fcc5d8968cf
 문제 발생시 [연락망](https://velog.io/@jinpro)으로 연락 주시면 감사하겠습니다. <br/>
 저장소를 찾아주셔서 감사합니다. 🙇🏻 <br/>
 
@@ -46,11 +69,19 @@
 
 ## 참고
 
+<<<<<<< HEAD
 - [디자인 및 기획서](https://www.figma.com/file/FMcTfiuDucOpEs2j6fh3XL/2022-Ajou-Beginner-Project-1-1?node-id=1%3A2)
 
 - [Figma 사용법](https://slash-amaranthus-65c.notion.site/Figma-c1dead5d929d44498e94641f8058e10d)
 
 - [프로젝트 조건](https://slash-amaranthus-65c.notion.site/P-1-0f22a61c074f4a86a57e01acdb8f3457)
+=======
+- [디자인 및 기획서](https://www.figma.com/file/wE7fo8Nx7r2QFoRXG2zDqM/2022-Ajou-Beginner-Project-1-2?node-id=0%3A1)
+
+- [Figma 사용법](https://slash-amaranthus-65c.notion.site/Figma-c1dead5d929d44498e94641f8058e10d)
+
+- [프로젝트 조건](https://slash-amaranthus-65c.notion.site/P-2-99b36a35353c4166bfdcc881545f73f4)
+>>>>>>> f4c7dca9b8c11f7a5d42d1d030199fcc5d8968cf
 
 - [Git 사용법](https://github.com/code-squad/codesquad-docs/blob/master/codereview/README.md)
 
