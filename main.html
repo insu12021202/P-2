@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>HTML Layouts</title>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	</style>
+</head>
+<body>
+	<div class="parent">
+		<div class="header_main">하늘을 날고 싶은 물고기 </div>
+		<div class="nav">둘</div>
+		<div class="main_main">
+			<table>
+				<thead>
+					<tr>
+						<td>번호</td>
+						<td>작성자</td>
+						<td>제목</td>
+						<td>조회수</td>
+						<td>수정일</td>
+						<td>등록일</td>
+					</tr>
+				</thead>
+					<%
+					for(var i=0; i<rows.length; i++)
+					{
+						var data = rows[i];
+					%>
+					<tr>
+						<td><%=data.idx%></td>
+						<td><%=data.name%></td>
+						<td><a href='/read/<%=data.idx%>'><%=data.title%></a></td>
+						<td><%=data.hit%></td>
+						<td><%=data.modidate%></td>
+						<td><%=data.regdate%></td>
+					</tr>
+					<%}%>
+			</table>
+		<a href ='/write'>작성하기</a>
+		</div>
+		<div class="footer_main">넷</div>
+	</div>
+</body>
+
+</html>
