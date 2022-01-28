@@ -75,7 +75,7 @@ app.post('/searched_item', (req, res) => {
         if(err) throw err;
         let user_id = result[0].idUSER;
         let location = req.body.location;
-        let sql = `SELECT id,location,paths,deposit,rental_cost,m_fee,name,phone_num,chat,sub_func_list.like,user_id FROM sub_func_list right join sale_item on sub_func_list.sale_item_id = sale_item.id right join owner on sale_item.owner_id = owner.idowner inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(id = i.sale_item_id) where location='${location}' and (user_id='${user_id}' or user_id is null)`;
+        let sql = `SELECT chat_count,id,location,paths,deposit,rental_cost,m_fee,name,phone_num,chat,sub_func_list.like,user_id FROM sale_item left join sub_func_list on sub_func_list.sale_item_id = sale_item.id right join owner on sale_item.owner_id = owner.idowner inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(id = i.sale_item_id) where location='${location}' and(user_id='${user_id}' or user_id is null)`;
         con.query(sql, function(err, result) {
             if(err) throw err;
             //만약 해당 지역의 매물이 없을 때
@@ -83,7 +83,9 @@ app.post('/searched_item', (req, res) => {
                 res.send({success : 'fail'});
             }// 해당 지역의 매물이 있을 때
             else {
-                result.user_id = user_id;
+                result.forEach(element => {
+                    element.user_id = user_id;
+                })
                 res.send(result);
             }
         }) 
@@ -133,12 +135,86 @@ app.post('/detail', (req, res) => {
     let item_id = req.body.item_id;
     let user_id = req.body.user_id;
     let like_status = req.body.like_status;
-    let sql = `SELECT id, location, deposit, paths, rental_cost, m_fee, name, phone_num, owner_profile FROM sale_item as s inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(s.id = i.sale_item_id) left join owner on owner_id = idowner where id='${item_id}'
+    let sql = `SELECT chat_count, id, location, deposit, paths, rental_cost, m_fee, name, phone_num, owner_profile FROM sale_item as s inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(s.id = i.sale_item_id) left join owner on owner_id = idowner where id='${item_id}'
     `
     con.query(sql, function(err, result) {
         if(err) throw err;
         result[0].like_status = like_status;
+        result[0].user_id = user_id;
         res.send(result);
+    })
+})
+
+app.post('/chat', (req, res) => {
+    let item_id = req.body.item_id;
+    let user_id = req.body.user_id;
+    sql = `SELECT chat from sub_func_list where user_id='${user_id}' and sale_item_id='${item_id}'`; //sub_func_list에서 유저 정보와 매물id로 chat 정보 받아오기
+    con.query(sql, function(err, result) {
+        if(err) throw err;
+        if(JSON.stringify(result) === '[]' || result[0].chat == 0){//chat == 0 이거나 아예 해당 row가 없으면 먼저 count부터 up 하고 이후 분기점 진행
+            let sql2 = `SELECT chat_count from sale_item where id=${item_id}`
+            con.query(sql2, function(err, result){
+                if(err) throw err;
+                if(result[0].chat_count == null || result[0].chat_count == 0) { //chat_count가 null이면 count를 0으로 설정
+                    result[0].chat_count = 0;
+                }
+                 //chat_count가 0 이상이면 +1 해서 DB에 업데이트
+                let chat_count = result[0].chat_count + 1;
+                let sql2 = `UPDATE sale_item set chat_count=${chat_count} where id='${item_id}'`
+                con.query(sql2, function(err, result) {
+                    if(err) throw err;
+                    console.log('채팅 카운트 성공');
+                })
+            })//count up 끝
+             // 해당 row가 아예 없으면 sub_func_list에 새로운 row 만들기
+            if(JSON.stringify(result) === '[]' ){
+                let sql3 =`INSERT INTO sub_func_list(sale_item_id,chat,user_id) VALUES('${item_id}','1','${user_id}')`;
+                con.query(sql3, function(err, result){
+                    if(err) throw err;
+                    console.log('채팅 신청 안되어있고 row가 없어서 새로 만듦');
+                    res.send({});
+                })
+            } //row는 있는데 chat == 0이면 chat==1 로 Update하기
+            else{
+                console.log('row 있는데 chat이 0이라 ')
+                let sql3 = `UPDATE sub_func_list SET chat='1' where sale_item_id='${item_id}' and user_id='${user_id}'`;
+                con.query(sql3, function(err, result){
+                    if(err) throw err;
+                    console.log('채팅 신청 안되어있고 row가 있어서 UPDATE만 해줬음');
+                    res.send({});
+                })
+            }
+        }else{//채팅 신청이 되어있으면 채팅 카운트 하지 않고 state : 1 전송
+            res.send({state : 1});
+            console.log('이미 신청 되어있어서 아무것도 안해줄거야!')
+        }
+    })
+})
+
+app.post('/chat_data', (req, res) => {
+    let item_id = req.body.item_id;
+    let user_id = req.body.user_id;
+    let sql = `SELECT name, phone_num, owner_profile, id, chat FROM owner right join sale_item on idowner = owner_id left join sub_func_list on id = sale_item_id where id='${item_id}'`;
+    con.query(sql, function(err, result){
+        if(err) throw err;
+        result[0].user_id = user_id;
+        res.send(result);
+    })
+})
+
+app.post('/chatting_exit', (req, res) => {
+    let item_id = req.body.item_id;
+    let user_id = req.body.user_id;
+    //사용자의 채팅 신청 목록의 chat을 0으로 전환
+    let sql =`UPDATE sub_func_list SET chat=0 where sale_item_id=${item_id} and user_id=${user_id}`
+    con.query(sql, function(err, result){
+        if(err) throw err;
+        //해당 매물의 채팅 신청 카운트 - 1
+        let sql2 = `UPDATE sale_item SET chat_count = chat_count -1 where id='${item_id}'`;
+        con.query(sql2, function(err, result){
+            if(err) throw err;
+            res.send({success : 'success'});
+        })
     })
 })
 

@@ -9,7 +9,6 @@ export function moveToDetail(key, user_id, like_class) {
         like_class = 0 // 만약 아니면 0
     }
     let url = 'detail'
-    console.log('키와 유저 아이디 ',key, user_id)
     let item_id = key;
     $.ajax({
         type: "POST",
@@ -21,9 +20,8 @@ export function moveToDetail(key, user_id, like_class) {
         },
         dataType: 'json',
         success: (response)=>{
-            console.log(response);
             let html_str = getDetailHTML(response);
-            pushUrl(url);
+            pushUrl(url, response);
             renderingHTML(url,html_str);
         },
         error: (log)=>{console.log(log)}

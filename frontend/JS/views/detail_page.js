@@ -6,8 +6,20 @@ export function getDetailHTML(response) {
         like = `<i data-key="${response[0].id}" class="far fa-heart fa-2x like"></i>`;
     }
     let images = response[0].paths.split(',');
+
+    if(response[0].chat_count === null){
+        response[0].chat_count = 0;
+    }
     let detail_page_html = 
-    `<div class="detail">
+    `
+    <div class="detail_page_chat_popup hidden">
+            <span class="detail_page_chat_popup_text">채팅 신청하시겠습니까?</span>
+            <div class="detail_page_chat_popup_btns">
+                <button class="detail_page_chat_popup_cancle_btn">취소</button>
+                <button class="detail_page_chat_popup_add_btn">신청하기</button>
+            </div>
+        </div>
+    <div class="detail">
         <div class="detail_header">
             <button class="prev">＜</button>
             <div class="carousel-wrapper">
@@ -29,6 +41,7 @@ export function getDetailHTML(response) {
                     <span class="profile_phone_num">${response[0].phone_num}</span>
                 </div>
                 <div class="profile_sub_func">
+                    <span class="chat_count">${response[0].chat_count}</span>
                     <i class="fas fa-comment-dots fa-2x chat"></i>
                     ${like}
                 </div>   
@@ -44,7 +57,7 @@ export function getDetailHTML(response) {
                 <span>옵션: TV, 냉장고 등</span>
             </div>
             <div class="detail_footer_chat">
-                <button class="chat_btn">채팅 하기</button>
+                <button class="chat_btn" data-user="${response[0].user_id}" data-key="${response[0].id}">채팅 하기</button>
             </div>
         </div>
     </div>

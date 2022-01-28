@@ -23,8 +23,8 @@ export default function chooseLocaiton(event){
                 location.href = 'http://localhost:8000/';
             }
             else{
-                console.log(response); //나중에 지울 것
-                let list = makeItemList(response);
+                console.log(response);
+                let list = makeItemList(response); 
                 let html_str = getSearchedHTML(list,response[0].location);
                 pushUrl(url, value);
                 renderingHTML(url, html_str);

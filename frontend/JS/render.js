@@ -10,6 +10,8 @@ import { addLocation } from "./add_location.js";
 import { deleteLocation } from "./delete_location.js";
 import { sendSubFuncData } from "./send_subfun_data.js";
 import { carouselFunc } from "./carousel.js";
+import { showChatPopup } from "./show_chat_popup.js";
+import { chattingFunc } from "./chatting_func.js";
 
 const container = document.querySelector('.container');
 
@@ -22,6 +24,9 @@ export default function renderingHTML(url, html_str){
         carouselFunc();
         const like_btns = document.querySelectorAll('.like');
         like_btns.forEach(btn => btn.addEventListener('click', sendSubFuncData));
+        //채팅 하기 버튼에 클릭 이벤트 등록
+        const chat_btn = document.querySelector('.chat_btn');
+        chat_btn.addEventListener('click', showChatPopup);
     }
     if(url.includes('searched')){
         container.insertAdjacentHTML('afterbegin', html_str);
@@ -48,6 +53,8 @@ export default function renderingHTML(url, html_str){
     }
     if(url.includes('chatting')){
         container.insertAdjacentHTML('afterbegin', html_str);
+        chattingFunc();
+
     }
     if(url.includes('location_ctr')){
         container.insertAdjacentHTML('afterbegin', html_str);

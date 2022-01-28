@@ -15,7 +15,11 @@ export function makeItemList(response) {
     let like = ``;
     let list = '';
     let i = 0;
+    
     while(i < response.length){
+        if(response[i].chat_count === null){
+            response[i].chat_count = 0;
+        }
         let image = response[i].paths.split(',');
         if(response[i].like === 1){
             like = `<i data-key="${response[i].id}" class="fas fa-heart fa-2x like"></i>`;
@@ -34,6 +38,7 @@ export function makeItemList(response) {
             <span>부동산: ${response[i].name}</span>
         </div>
         <div class="item_sub_func">
+            <span class="chat_count">${response[i].chat_count}</span>
             <i class="fas fa-comment-dots fa-2x chat"></i>
             ${like}
         </div></li>`;
