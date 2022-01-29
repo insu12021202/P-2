@@ -68,6 +68,52 @@ app.get('/logout', (req, res)=> {
     });
 })
 
+app.get('/chat_list', (req, res) => {
+    let user_nickname = req.user.nickname;
+    let sql2 = `SELECT idUSER FROM user WHERE nickname='${user_nickname}'`;
+    con.query(sql2, function(err, result) {
+        if(err) throw err;
+        let user_id = result[0].idUSER;
+        let sql = `SELECT nickname,chat_count,id,location,paths,deposit,rental_cost,m_fee,name,phone_num,chat,sub_func_list.like,user_id FROM sale_item left join sub_func_list on sub_func_list.sale_item_id = sale_item.id right join owner on sale_item.owner_id = owner.idowner inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(id = i.sale_item_id) left join user on user_id = idUser where user_id='${user_id}' and sub_func_list.chat='1'`;
+        con.query(sql, function(err, result) {
+            if(err) throw err;
+            //만약 좋아요 신청 목록이 없을 때
+            if(result.length === 0) {
+                res.send({success : 'fail'});
+            }// 해당 지역의 매물이 있을 때
+            else {
+                result.forEach(element => {
+                    element.user_id = user_id;
+                })
+                res.send(result);
+            }
+        }) 
+    })
+})
+
+app.get('/like_list', (req, res) => {
+    let user_nickname = req.user.nickname;
+    let sql2 = `SELECT idUSER FROM user WHERE nickname='${user_nickname}'`;
+    con.query(sql2, function(err, result) {
+        if(err) throw err;
+        let user_id = result[0].idUSER;
+        let sql = `SELECT nickname,chat_count,id,location,paths,deposit,rental_cost,m_fee,name,phone_num,chat,sub_func_list.like,user_id FROM sale_item left join sub_func_list on sub_func_list.sale_item_id = sale_item.id right join owner on sale_item.owner_id = owner.idowner inner join (select sale_item_id , group_concat(path) as paths from images group by sale_item_id) as i on(id = i.sale_item_id) left join user on user_id = idUser where user_id='${user_id}' and sub_func_list.like='1'`;
+        con.query(sql, function(err, result) {
+            if(err) throw err;
+            //만약 좋아요 신청 목록이 없을 때
+            if(result.length === 0) {
+                res.send({success : 'fail'});
+            }// 해당 지역의 매물이 있을 때
+            else {
+                result.forEach(element => {
+                    element.user_id = user_id;
+                })
+                res.send(result);
+            }
+        }) 
+    })
+})
+
 app.post('/searched_item', (req, res) => {
     let user_nickname = req.user.nickname;
     let sql2 = `SELECT idUSER FROM user WHERE nickname='${user_nickname}'`;
@@ -163,7 +209,6 @@ app.post('/chat', (req, res) => {
                 let sql2 = `UPDATE sale_item set chat_count=${chat_count} where id='${item_id}'`
                 con.query(sql2, function(err, result) {
                     if(err) throw err;
-                    console.log('채팅 카운트 성공');
                 })
             })//count up 끝
              // 해당 row가 아예 없으면 sub_func_list에 새로운 row 만들기
@@ -171,22 +216,18 @@ app.post('/chat', (req, res) => {
                 let sql3 =`INSERT INTO sub_func_list(sale_item_id,chat,user_id) VALUES('${item_id}','1','${user_id}')`;
                 con.query(sql3, function(err, result){
                     if(err) throw err;
-                    console.log('채팅 신청 안되어있고 row가 없어서 새로 만듦');
                     res.send({});
                 })
             } //row는 있는데 chat == 0이면 chat==1 로 Update하기
             else{
-                console.log('row 있는데 chat이 0이라 ')
                 let sql3 = `UPDATE sub_func_list SET chat='1' where sale_item_id='${item_id}' and user_id='${user_id}'`;
                 con.query(sql3, function(err, result){
                     if(err) throw err;
-                    console.log('채팅 신청 안되어있고 row가 있어서 UPDATE만 해줬음');
                     res.send({});
                 })
             }
         }else{//채팅 신청이 되어있으면 채팅 카운트 하지 않고 state : 1 전송
             res.send({state : 1});
-            console.log('이미 신청 되어있어서 아무것도 안해줄거야!')
         }
     })
 })

@@ -24,7 +24,6 @@ module.exports = function (app, con){
     //로그인 정보 인증 과정
     passport.use(new LocalStrategy(
         function(username, password, done) {
-            console.log(username,password);
             let sql = `SELECT * FROM user WHERE username='${username}'`;
             con.query(sql, [username, password], function(err, result) {
                 if(err)

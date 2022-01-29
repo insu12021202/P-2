@@ -42,14 +42,28 @@ export default function renderingHTML(url, html_str){
     }
     if(url.includes('like_list')){
         container.insertAdjacentHTML('afterbegin', html_str);
+        //이미지 클릭 시 상세 페이지로 넘어가는 이벤트 등록
+        const imgs = document.querySelectorAll('.item_img img');
+        imgs.forEach(img => img.addEventListener('click', (e)=>{
+            let like_status = e.target.parentNode.parentNode.querySelector('.like').classList[0]
+            moveToDetail(e.target.dataset.key, e.target.dataset.user, like_status);
+        }));
+        //좋아요, 채팅 클릭 시 DB에 좋아요 등록, 채팅 신청 정보 보내고 해당 페이지 다시 그리기.
+        const like_btns = document.querySelectorAll('.like');
+        like_btns.forEach(btn => btn.addEventListener('click', sendSubFuncData));
     }
     if(url.includes('chat_list')){
         container.insertAdjacentHTML('afterbegin', html_str);
-        const chat_btns = document.querySelectorAll('#chat');
-        chat_btns.forEach((btn) => btn.addEventListener('click',(e)=> {
-            let key = e.target.dataset.value;
-            moveToChat(key);
-        }))
+        const chat_btns = document.querySelectorAll('.chat');
+         //이미지 클릭 시 상세 페이지로 넘어가는 이벤트 등록
+         const imgs = document.querySelectorAll('.item_img img');
+         imgs.forEach(img => img.addEventListener('click', (e)=>{
+             let like_status = e.target.parentNode.parentNode.querySelector('.like').classList[0]
+             moveToDetail(e.target.dataset.key, e.target.dataset.user, like_status);
+         }));
+         //좋아요, 채팅 클릭 시 DB에 좋아요 등록, 채팅 신청 정보 보내고 해당 페이지 다시 그리기.
+         const like_btns = document.querySelectorAll('.like');
+         like_btns.forEach(btn => btn.addEventListener('click', sendSubFuncData));
     }
     if(url.includes('chatting')){
         container.insertAdjacentHTML('afterbegin', html_str);
